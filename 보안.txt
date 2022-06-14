@@ -1,0 +1,34 @@
+DB보안
+시스템 보안
+-사용자를 생성, 암호를 설정
+-시스템 권한 부여 : 데이터베이스에 ~를 할 수 있는
+	(Ex)  CREATE SESSION, CREATH TABLE,
+	      CREATR VIEW, CREATE SYNONYM
+
+데이터보안
+-뷰와 동의어를 활용
+-객체 권한 부여 : (  )의 ~을 사용(SELECT, INSERTm UPDATE...) 할 수 있는
+	(Ex) SELECT ON hr.meployees, UPDATE on hr.departements
+
+ROLE (롤)
+: 시스템 보안 + 데이터 보안을 ㅜ십고 동적으로 하기위해 생성하는 이름이 있는 권한의 묶음
+
+권한(를)브여, 회수 SQL( DCL : Data Control Langeage)
+-권한(를) 부여
+GRANT 권한, .......TO 대상(사용자, 롤, PUBLIC)
+[WITH ADMIN OPTION]
+[WITH GRANT OPTION]
+
+-권한(를) 취소
+REVOKE 권한, ... FROM 대상(사용자, 롤, PUBLIC);
+
+"GRANT [권한, ...] TO 대상"
+[with admin option] -> System 권한, Role
+[with grant option] -> Object 권한
+
+       r1	        r1	
+DBA --> HR(X) --> Demo -> admin
+      <==
+    r1           r1
+HR --> Scott --> Demo(X) -> grant
+                <==
