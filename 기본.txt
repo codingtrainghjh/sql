@@ -1,0 +1,79 @@
+--Create
+--Alter
+--Drop
+--Truncate
+--Rename
+--Comment
+
+스키마 : 특정 유저가 소유하는 객체 모음
+
+	제목 규칙
+1. 시작은 글자로(숫자X)
+2. 글자수는 30까지 가능(알파벳기준)
+3. 테이블 이름은 영어와 숫자,_,$,# 만 가능
+4. 유저이름과 객체와 객체 내부의 이름은 같을 수 없다.
+5. 예약이름은 쓸 수없음
+
+	Datatype (ORACLE)
+        ******Smal size Data******
+숫자
+- NUMBER ( p(최대 38자리까지 가능) [, s ] ) Ex) NUMBER(6) -> 999999 	  
+  		      NUMBER(8, 2) -> 999999.99
+		      NUMBER(2, 2) -> 1미만의 수
+날짜
+- DATE : 고정길이 Ex) 22/06/10 -> 2022/06/10 00 : 00 : 00
+		   22/06/10 15 : 08 : 10 -> 2022/06/10 15 : 08 : 10
+- DATETIME
+-- TIMESTAMP WITH TIME ZONE
+-- TIMESTAMP WITH LOCAL TIME ZONE
+-- INTERVAL YEAR TO MONTH
+-- INTERVAL DAY TO SECOND
+
+문자
+- CHAR (n) : 최대 2000Byte 까지의 고정길이 문자데이터 타입
+	    Ex) CHAR (10)에 'oracle' -> oracle____로 저장
+- VARCHAR2 (n) : 최대 4000Byte 까지의 가변길이 문자데이터 타입
+	    Ex) VARCHAR2 (10)에 'oracle' -> oracle로 저장
+
+이진
+- RAW (n) : 최대 2000Byte 까지의 이진데이터 타입
+
+        ******Large Size Data******_(4000B 초과 ~ 최대 4GB)
+문자
+- LONG, Clob
+
+이진
+- LONG RAW, BLob, BFile
+
+Long(2G) - Long      |__Table 당 1개
+       	- Long raw |
+
+Lob(4G) - CLob |__Table 당
+          - BLob  |  갯수제한x
+          - BFile
+
+rowid - 행이 처음 만들어질때 부여하는 고유번호
+	18개의 문자로 이루어짐 ( AAAE5oAAEAAAADLAAA)
+			      ( AAAE5o(Table)AAE(Flie)AAAADL(Block)AAA(Row) )
+				논리저장,    ------------물리저장-------------
+
+	제약조건
+NOT NULL
+UNIQUE
+- 중복방지
+PRIMARY KEY
+- 유일성, 최소성 
+FOREIGN KEY
+- 프라이머리 키를 참조
+CHECK
+- 규칙세우기
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+--2번 HR
+SELECT * FROM departments;
+--진행 중인 TRANSACTION은 현재 유저에게만 보인다. COMMIT한 이후에 다른 사람과 공유한다.
+INSERT INTO	departments (department_id, department_name)
+VALUES		(30, 'Purchasing');
+INSERT INTO	departments
+VALUES		(100, 'Finance', NULL, NULL);
+--처음에 인수값을 지정하지 않거나 null값을 따로 지정해 줄 수도 있다.
+SELECT * FROM departments;
+COMMIT;
+--2번 HR 
+SELECT * FROM departments;
+FROM   employees
+WHERE  job_id LIKE '%REP%';
+SELECT * FROM sales_reps;
+
+INSERT INTO sales_reps
+SELECT employee_id, last_name, salary, commission_pct
+FROM   employees
+WHERE  job_id LIKE '%REP%';
+SELECT * FROM sales_reps;
+COMMIT; --입력중인 데이터는 공유되지 않는다.
+
+--2번 HR
+UPDATE employees
+SET salary= salary*1.1
+WHERE employee_id = 104;
+--동일행을 동시에 다른유저가 수정할 수 없음
+--2번 HR
+ROLLBACK;
