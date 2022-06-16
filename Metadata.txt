@@ -1,0 +1,31 @@
+DBMS
+
+Metadata(Data Dictionary) : 자동생성 - Base Table
+				     ↓
+ 			          - Data Dictionary view : 사용자에게 제공 +~
+~+ - DBA _ * : DBA만 접근, DB전체를 대상
+      -  ALL_ * : 현재 사용자가 접근 가능한~
+       -  USER_ * : 현재 사용자가 소유하는~
+	(범위_항목)
+
+ex) DBA_TABLES : DB전체 table
+     ALL_TABLES : 현재 사용자가 접근 가능한 table
+     USER_TABLES : 현재 사용자 소유의 table
+
+인라인뷰 : FROM절을 사용하는 서브쿼리
+
+Multi Table Insert View (p.689)
+- SELECT를 한 번만 해도 됨
+
+merge : 두개의 테이블을 병합하는 과정에서 insert와 update를 한 번에 처리하는 문장
+
+flashback : 빠르게 되돌린다 (220616 :COMMIT 된걸 되돌리는 실습)
+
+DML - COMMIT 전 : ROLLBACK  }
+      - COMMTI 후 : FLASHBACK } undo data
+
+1.flashback query  : undo data 제공
+2.flashback versions query : 지정된 기간 동안 특정 ROW의 상태를 추적 가능
+3.flashback Transactin query : 각 Transaction의 세부 정보 확인
+4.flashback Table : 특정 시점으로 테이블 전체 복구
+※ 2,3,4는 고급유료기능
