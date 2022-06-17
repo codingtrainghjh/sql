@@ -1,0 +1,11 @@
+NLS - national language service
+
+date -> 	yy/mm/dd, dd-mm-rr
+
+	{ timestamp 
+	}
+datatime { timestamp with time zone
+	}
+	{ timestamp with local time zone
+
+------------------------------------------------------------------------------
