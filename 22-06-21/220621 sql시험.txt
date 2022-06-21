@@ -1,0 +1,125 @@
+--1. HR 사용자로 접속하여 다음의 요구사항대로 PROF 테이블을 생성한 후 테이블 생성 명령어를 적으시오.
+CREATE TABLE PROF
+(PROFNO number(4) PRIMARY KEY,
+    NAME varchar2(15) CONSTRAINT PROF_NAME_NN not null
+                                CONSTRAINT PROF_NAME_UK unique,
+    ID varchar2(15) not null,
+    HIREDATE number(4),
+    PAY number(4),
+    DEPTNO number(4));
+
+--2. PROF 테이블의 deptno열에 DEPARTMENTS테이블의 DEPARTMENT_ID열을 참조하는 외래키를 생성하시오. 
+--외래키의 이름은 prof_deptno_fk로 지정하시오.
+ALTER TABLE PROF ADD
+    CONSTRAINT prof_deptno_fk Foreign Key (deptno)
+        REFERENCES departments(department_id);
+    
+--3. PROF 테이블에 정의된 제약도건의 이름, 유형, 상태를 관련 데이터딕셔너리에서 조회하시오.
+SELECT constraint_name, constraint_type, status
+FROM user_constraints
+WHERE table_name = 'PROF';
+
+--4. 다음 지시사항대로 DML을 실행하시오.
+(1) 다음과 같은 결과가 출력되도록 PROF 테이블에 데이터를 입력하시오. 입력 후 반드시 COMMIT 하시오.
+INSERT INTO prof
+VALUES('1001', '차은우', 'c1001', 17/03/01, '800', '10');
+INSERT INTO prof
+VALUES('1002', '김제니', 'k1002', 20/11/28, '750', '20');
+INSERT INTO prof
+VALUES('1003', '손담비', 's1003', 21/03/02,null,null);
+SELECT*FROM prof;
+
+(2) 1001번 교수의 급여(PAY)를 1100으로 변경하시오.
+UPDATE prof SET pay = '1100'
+WHERE profno = '1001';
+
+(3) 모든 변경사항을 데이터베이스에 저장하시오.
+COMMIT;
+
+--5. PROF 테이블에 대하여 인덱스를 생성하고 확인하시오.
+ (1) PROF 테이블의 ID 열에 PROF_ID_IX라는 이름으로 인덱스를 생성하시오.
+CREATE INDEX PROF_ID_IX ON PROF(ID);
+
+(2) PROF 테이블과 연관된 인덱스의 이름을 데이터딕셔너리에서 조회하시오.
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'PROF';
+
+(3) PROF 테이블과 연관된 인덱스는 몇 개 입니까?
+3개
+
+--6. PROF 테이블에 대하여 다음의 지시사항을 실행하시오.
+(1) PROF Table에 성별을 저장하는 새 열을 추가시오. 열 이름은 GENDER, 데이터 유형은 CHAR(3)으로 지정한다.
+ALTER TABLE prof ADD GENDER CHAR(3);
+
+(2) PROF 테이블 NAME 열의 길이를 20으로 변경하시오.
+DESC prof;
+ALTER TABLE prof MODIFY NAME VARCHAR2(20);
+
+--7. 다음과 같이 객체생성 요구사항을 실행하시오.
+(1) 다음의 결과와 같이 PROF 테이블로부터 교수번호, 교수이름, 직위 등을 보기 위한 PROF_LIST_VU라는 VIEW를 생성하고 그 명령문을 다음에 기술하시오. 
+(VIEW에 보이는 열 이름 일부 변경 필요)
+CREATE OR REPLACE VIEW PROF_LIST_VU
+AS
+SELECT profno 교수번호, name 교수이름, id
+FROM prof;
+
+SELECT * FROM PROF_LIST_VU;
+
+(2) PROF_LIST_VU 뷰에 대하여 P_VU라는 이름의 동의어(SYNONYM)를 생성하시오.
+CREATE SYNONYM P_VU FOR PROF_LIST_VU;
+
+(3) 다음 설정을 적용한 prof_no_seq라는 이름의 시퀀스(SEQUENCE)를 생성하시오.    
+CREATE SEQUENCE prof_no_seq
+ START WITH 1005
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+--8. 다음과 같이 객체에 대한 요구사항을 수정하시오.
+(1) PROF_LIST_VU에서 입사일(HIREDATE)을 볼 수 있도록 VIEW를 수정하시오.
+CREATE OR REPLACE VIEW PROF_LIST_VU
+AS
+SELECT profno 교수번호, name 교수이름, id, hiredate 입사일
+FROM prof;
+
+SELECT * FROM user_sequences;
+
+(2) PROF_NO_SEQ의 증분값을 2로 수정하시오.
+ALTER SEQUENCE prof_no_seq
+INCREMENT BY 2
+NOCACHE
+NOCYCLE;
+
+--9. 관리자로 접속하여 새 사용자를 생성하고 다음 지시사항대로 권한을 부여하시오.
+(1) 암호가 t2460인 TEST 사용자를 생성하시오.
+CREATE user TEST IDENTIFIED by t2460
+default tablespace USERS
+TEMPORARY tablespace TEMP;
+
+(2) TEST 사용자에게 CONNECT와 RESOURCE 롤을 부여하시오.(롤은 이미 있음)
+GRANT CONNECT, RESOURCE to TEST;
+
+(3) TEST 사용자에게 CREATE VIEW 시스템 권한을 부여하시오.
+GRANT CREATE VIEW to TEST;
+
+(4) TEST 사용자에게 HR.PROF_LIST_VU 뷰를 조회(SELECT)할 권한을 부여하시오.
+GRANT SELECT on HR.PROF_LIST_VU to TEST;
+
+--10. PROF 테이블을 삭제하고 딕셔너리를 조사해서 인덱스, 뷰, 동의어의 존재 여부를 검사하시오.
+(1) PROF 테이블을 휴지통에 보관하지 않고 영구 삭제하는 명령을 쓰시오.
+DROP TABLE PROF CASCADE CONSTRAINTS;
+
+10-(2) PROF 테이블과 연관된 인덱스, 뷰, 동의어는 어떻게 되었는지 쓰시오.
+SELECT index_name
+FROM user_indexes
+WHERE table_name = 'PROF';
+SELECT view_name
+FROM user_views
+WHERE view_name = 'PROF_LIST_VU';
+SELECT synonym_name
+FROM user_synonyms
+WHERE table_name = 'PROF';
+인덱스와 동의어는 사라졌으나 뷰는 살아있음.
+
+
